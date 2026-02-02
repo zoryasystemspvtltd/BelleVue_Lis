@@ -1,0 +1,366 @@
+﻿[
+  {
+    "Code": "001",
+    "Description": "1.GLUC"
+  },
+  {
+    "Code": "002",
+    "Description": "2.UREA"
+  },
+  {
+    "Code": "003",
+    "Description": "3.CREA"
+  },
+  {
+    "Code": "004",
+    "Description": "4.UA"
+  },
+  {
+    "Code": "005",
+    "Description": "5.CHOL"
+  },
+  {
+    "Code": "006",
+    "Description": "6.TRIG"
+  },
+  {
+    "Code": "007",
+    "Description": "7.HDL-C"
+  },
+  {
+    "Code": "008",
+    "Description": "8.LDL-C"
+  },
+  {
+    "Code": "009",
+    "Description": "9.TP"
+  },
+  {
+    "Code": "010",
+    "Description": "10.ALB"
+  },
+  {
+    "Code": "011",
+    "Description": "11.AST-OT"
+  },
+  {
+    "Code": "012",
+    "Description": "12.ALT-PT"
+  },
+  {
+    "Code": "013",
+    "Description": "13.ALP"
+  },
+  {
+    "Code": "014",
+    "Description": "14.GGT"
+  },
+  {
+    "Code": "015",
+    "Description": "15.TBIL-B"
+  },
+  {
+    "Code": "016",
+    "Description": "16.TBIL-C"
+  },
+  {
+    "Code": "017",
+    "Description": "17.DBIL-B"
+  },
+  {
+    "Code": "018",
+    "Description": "18.DBIL-C"
+  },
+  {
+    "Code": "019",
+    "Description": "19.CA"
+  },
+  {
+    "Code": "020",
+    "Description": "20.PHOS"
+  },
+  {
+    "Code": "021",
+    "Description": "21.MG"
+  },
+  {
+    "Code": "022",
+    "Description": "22.VLDLC"
+  },
+  {
+    "Code": "023",
+    "Description": "23.GLOB"
+  },
+  {
+    "Code": "024",
+    "Description": "24.A/G%"
+  },
+  {
+    "Code": "025",
+    "Description": "25.CO2"
+  },
+  {
+    "Code": "026",
+    "Description": "26.AMY82"
+  },
+  {
+    "Code": "027",
+    "Description": "27.LIP229"
+  },
+  {
+    "Code": "028",
+    "Description": "28.CK-NAK"
+  },
+  {
+    "Code": "029",
+    "Description": "29.CK-MB"
+  },
+  {
+    "Code": "030",
+    "Description": "27.LDH28"
+  },
+  {
+    "Code": "031",
+    "Description": "31.IRON"
+  },
+  {
+    "Code": "032",
+    "Description": "32.UIBC"
+  },
+  {
+    "Code": "033",
+    "Description": "33.ASO"
+  },
+  {
+    "Code": "034",
+    "Description": "34.RF"
+  },
+  {
+    "Code": "035",
+    "Description": "35.CRP47"
+  },
+  {
+    "Code": "036",
+    "Description": "36.UCSFP"
+  },
+  {
+    "Code": "037",
+    "Description": "37.UALB"
+  },  
+  {
+    "Code": "038",
+    "Description": "38.AMM"
+  },
+  {
+    "Code": "039",
+    "Description": "39.CARB"
+  },
+  {
+    "Code": "040",
+    "Description": "40.PHYN"
+  },
+  {
+    "Code": "041",
+    "Description": "41.PHB"
+  },
+  {
+    "Code": "042",
+    "Description": "42.VPA"
+  },
+  {
+    "Code": "043",
+    "Description": "43.C-3"
+  },
+  {
+    "Code": "044",
+    "Description": "44.C-4"
+  },
+  {
+    "Code": "045",
+    "Description": "45.IGG"
+  },
+  {
+    "Code": "046",
+    "Description": "46.IGA"
+  },
+  {
+    "Code": "047",
+    "Description": "47.IGM"
+  },
+  {
+    "Code": "048",
+    "Description": "48.BUN"
+  },
+  {
+    "Code": "049",
+    "Description": "49.I-BIL"
+  },
+  {
+    "Code": "050",
+    "Description": "50.AMY06"
+  },
+  {
+    "Code": "051",
+    "Description": "51.APO-A"
+  },
+  {
+    "Code": "052",
+    "Description": "52.APO-B"
+  },
+  {
+    "Code": "053",
+    "Description": "53.CER"
+  },
+  {
+    "Code": "054",
+    "Description": "54.CHE"
+  },
+  {
+    "Code": "055",
+    "Description": "55.CRE"
+  },
+  {
+    "Code": "056",
+    "Description": "56.CRP-HS"
+  },
+  {
+    "Code": "057",
+    "Description": "57.CRP-N"
+  },
+  {
+    "Code": "058",
+    "Description": "58.D-DIM"
+  },
+  {
+    "Code": "059",
+    "Description": "59.HbA1c"
+  },
+  {
+    "Code": "060",
+    "Description": "60.T-Hgb"
+  },
+   {
+    "Code": "061",
+    "Description": "61.HBDH"
+  },
+   {
+    "Code": "062",
+    "Description": "62.HCY"
+  },
+   {
+    "Code": "063",
+    "Description": "63.LIP30"
+  },
+   {
+    "Code": "064",
+    "Description": "64.LITH"
+  },
+   {
+    "Code": "065",
+    "Description": "65.IGE"
+  },
+   {
+    "Code": "066",
+    "Description": "66.TRF"
+  },
+   {
+    "Code": "067",
+    "Description": "67.VAN"
+  },
+   {
+    "Code": "068",
+    "Description": "68.LAC"
+  },
+   {
+    "Code": "069",
+    "Description": "69.CH/HDL"
+  },
+  {
+    "Code": "070",
+    "Description": "70.LD/HDL"
+  },
+  {
+    "Code": "071",
+    "Description": "71.C-LDL"
+  },
+  {
+    "Code": "072",
+    "Description": "72.TIBC"
+  },
+  {
+    "Code": "073",
+    "Description": "73.ACR"
+  },
+  {
+    "Code": "074",
+    "Description": "74.VLDL"
+  },
+  {
+    "Code": "075",
+    "Description": "75.cLD/HD"
+  },
+  {
+    "Code": "096",
+    "Description": "96.LIH"
+  },
+  {
+    "Code": "097",
+    "Description": "97.Na"
+  },
+  {
+    "Code": "098",
+    "Description": "98.K"
+  },
+  {
+    "Code": "099",
+    "Description": "99.CI"
+  },
+  {
+    "Code": "101",
+    "Description": "101.T-Hb"
+  },
+   {
+    "Code": "102",
+    "Description": "102.A1c"
+  },
+  {
+    "Code": "103",
+    "Description": "103.R-150"
+  },
+  {
+    "Code": "104",
+    "Description": "104.S-1ul"
+  },
+  {
+    "Code": "105",
+    "Description": "105.S-2ul"
+  },
+  {
+    "Code": "106",
+    "Description": "106.S-5ul"
+  },
+  {
+    "Code": "107",
+    "Description": "107.W340nm"
+  },
+  {
+    "Code": "108",
+    "Description": "108.W480nm"
+  },
+  {
+    "Code": "109",
+    "Description": "109.W600nm"
+  },
+  {
+    "Code": "110",
+    "Description": "110.Lp(a)"
+  },
+  {
+    "Code": "111",
+    "Description": "111.ADA"
+  },
+  {
+    "Code": "112",
+    "Description": "112.G6PD"
+  }
+]

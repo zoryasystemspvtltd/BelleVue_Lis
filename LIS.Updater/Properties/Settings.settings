@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ZorUpdater.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Repo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://localhost:44392</Value>
+    </Setting>
+    <Setting Name="AppDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">F:\Arghya\Projects\zorya\Bellevue_LIS\LIS.Updater\bin\Debug\test</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,0 +1,176 @@
+﻿USE [LISStaging]
+GO
+/****** Object:  StoredProcedure [dbo].[Usp_SynchHISData]    Script Date: 11/10/2021 11:35:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Usp_SynchHISData]
+AS
+
+BEGIN
+
+	IF OBJECT_ID(N'tempdb..#PATIENT') IS NOT NULL
+	BEGIN
+		DROP TABLE #PATIENT
+	END
+	IF OBJECT_ID(N'tempdb..#MAPPING') IS NOT NULL
+	BEGIN
+		DROP TABLE #MAPPING
+	END
+
+	CREATE TABLE #MAPPING(
+	HISTestCode VARCHAR(255),
+	SpecimenCode VARCHAR(255),
+	SpecimenName VARCHAR(500),
+	GroupTag VARCHAR(1)
+	)
+
+	INSERT INTO #MAPPING
+	SELECT DISTINCT HISTestCode,SpecimenCode,SpecimenName
+	,CASE WHEN GroupName = 'CITR.PLAS' THEN 'C'
+	 WHEN GroupName = 'EDTA' THEN 'E'
+	 WHEN GroupName = 'F' THEN 'F'
+	 WHEN GroupName = 'PLAIN' THEN 'G'
+	 WHEN GroupName = 'PP' THEN 'P'
+	 WHEN GroupName = 'RAN' THEN 'R'
+	 WHEN GroupName = 'URINE' THEN 'U'
+	 ELSE  'G' END
+	FROM [BeckmanLIS].[dbo].[TestMappingMaster] WHERE IsActive=1
+	
+	CREATE TABLE #PATIENT(
+		HISPATIENTID NVARCHAR(30),
+		REQNO INT,
+		PATIENTNM VARCHAR(255),
+		AGE VARCHAR(10),
+		DOB DATETIME,
+		SX VARCHAR(1),
+		IPNO INT,
+		MRNO INT,
+		ISPROCESSED BIT DEFAULT 0
+	) 
+
+	INSERT INTO #PATIENT
+	SELECT DISTINCT 
+	COALESCE(IPNO,MRNO,REQNO) AS HISPATIENTID,
+	REQNO,PATIENTNM,AGE,GETDATE(),SX,IPNO,MRNO,0
+	FROM [LISStaging].[dbo].[Staging_TestReq] R
+	INNER JOIN #MAPPING M ON M.HISTestCode = R.TESTID 
+	WHERE R.Acknowledged = 0
+	
+
+	WHILE((SELECT COUNT(*)  FROM #PATIENT WHERE ISPROCESSED = 0 ) > 0)
+	BEGIN
+		DECLARE @REQNO INT,
+		@AGE VARCHAR(10),
+		@AGEYEAR INT,
+		@AGEMONTH INT,
+		@DOB DATETIME,
+		@HISPATIENTID NVARCHAR(30)
+	
+		SELECT TOP 1 @REQNO=REQNO,@AGE= AGE,@HISPATIENTID = HISPATIENTID FROM #PATIENT WHERE ISPROCESSED = 0 
+
+		SELECT @AGEYEAR=CAST(CAST(@AGE AS DECIMAL)AS INT)*-1
+	
+		SELECT @DOB = GETDATE()
+		IF(@AGEYEAR <= 0)
+		BEGIN
+			SELECT @DOB = DATEADD(YEAR,@AGEYEAR,@DOB)
+		END
+	
+		UPDATE #PATIENT SET DOB = @DOB WHERE REQNO = @REQNO
+	
+		DECLARE @PATIENTID INT 
+
+		BEGIN TRANSACTION
+
+		IF NOT EXISTS(SELECT 1 FROM [BeckmanLIS].[dbo].[PatientDetails] WHERE HISPATIENTID = @HISPATIENTID)
+		BEGIN
+			INSERT INTO [BeckmanLIS].[dbo].[PatientDetails] 
+			(Name,Age,Gender,Phone,IsActive,DateOfBirth,CreatedBy,CreatedOn,HisPatientId)
+			SELECT PATIENTNM,CAST(AGE AS decimal),CASE WHEN SX='M' THEN 'MALE' ELSE 'FEMALE' END, 
+			'',1,DOB,'JOB',GETDATE(),HISPATIENTID
+			 FROM #PATIENT WHERE REQNO=@REQNO
+
+			 SET @PATIENTID=@@IDENTITY
+
+			IF(@@ERROR>0) 
+			BEGIN
+				ROLLBACK TRANSACTION
+			END
+		 END
+		 ELSE
+		 BEGIN
+			SELECT @PATIENTID=ID FROM [BeckmanLIS].[dbo].[PatientDetails] WHERE HisPatientId = @HISPATIENTID
+
+			UPDATE [BeckmanLIS].[dbo].[PatientDetails] 
+			SET NAME=A.PATIENTNM,AGE=A.AGE,Gender = A.GENDER
+			FROM [BeckmanLIS].[dbo].[PatientDetails] B 
+			INNER JOIN (
+				SELECT PATIENTNM,CAST(AGE AS decimal) AGE,CASE WHEN SX='M' THEN 'MALE' ELSE 'FEMALE' END AS GENDER, 
+				'' AS PHONE,1 AS ISACTIVE,DOB,'JOB' AS CreatedBy,GETDATE() AS CreatedOn,HISPATIENTID
+				 FROM #PATIENT WHERE REQNO=@REQNO
+			 ) A ON B.HisPatientId = A.HISPATIENTID
+			WHERE B.HISPATIENTID = @HISPATIENTID
+
+			IF(@@ERROR>0) 
+			BEGIN
+				ROLLBACK TRANSACTION
+			END
+		 END		 
+
+		INSERT INTO [BeckmanLIS].[dbo].[TestRequestDetails]
+		(SampleNo,HISTestCode,HISTestName,SampleCollectionDate,SampleReceivedDate,
+		SpecimenCode,SpecimenName,CreatedBy,CreatedOn,ReportStatus,PatientId,
+		IPNo,BedNo,MRNo,HISRequestId,HISRequestNo,DepartmentId,Department)
+		SELECT (ST.REQNO+M.GroupTag) AS SAMPLENO,ST.TESTID,ST.TESTNM,
+		ST.REQDTTM,ST.REQDTTM,m.SpecimenCode,m.SpecimenName,'JOB',GETDATE(),
+		0,@PATIENTID,ST.IPNO,ST.BEDNO,ST.MRNO,ST.REQID,ST.REQNO
+		,ST.DEPTID,ST.DEPTNM 
+		FROM [LISStaging].[dbo].[Staging_TestReq]  AS ST
+		LEFT JOIN [BeckmanLIS].[dbo].[TestRequestDetails] AS TRD
+		ON ST.REQNO=TRD.HISRequestNo AND ST.TESTID=TRD.HISTestCode
+		INNER JOIN #MAPPING AS M ON ST.TESTID=M.HISTestCode
+		WHERE ST.Acknowledged = 0 AND TRD.Id IS NULL AND REQNO=@REQNO
+
+		IF(@@ERROR>0) 
+		BEGIN
+			ROLLBACK TRANSACTION
+		END
+
+		INSERT INTO [BeckmanLIS].[dbo].[TestParameters]
+		(HISParamCode,HISParamName,HISTestCode,CreatedBy,CreatedOn,TestRequestDetailsId)
+		SELECT DISTINCT STP.ParameterCode,STP.Parameter,STP.TestId,
+		'JOB',GETDATE(),TRD.Id 
+		FROM [LISStaging].[dbo].[Staging_Testparameter] STP
+		INNER JOIN [BeckmanLIS].[dbo].[TestRequestDetails] AS TRD ON
+		STP.TestId=TRD.HISTestCode AND TRD.HISRequestNo=@REQNO 
+	 
+		IF(@@ERROR>0) 
+		BEGIN
+			ROLLBACK TRANSACTION
+		END
+
+		UPDATE ST SET ST.Acknowledged=1 
+		FROM [LISStaging].[dbo].[Staging_TestReq]  AS ST
+		INNER JOIN [BeckmanLIS].[dbo].[TestRequestDetails] AS TRD
+		ON ST.REQNO=TRD.HISRequestNo AND ST.TESTID=TRD.HISTestCode
+		WHERE REQNO=@REQNO
+
+		UPDATE [LISStaging].[dbo].[Staging_TestReq]
+		SET Acknowledged = 0
+		FROM [LISStaging].[dbo].[Staging_TestReq]  AS ST
+		INNER JOIN #MAPPING AS M ON ST.TESTID=M.HISTestCode AND CAST(ST.REQDTTM AS DATE) = CAST(GETDATE() AS DATE) AND ST.Acknowledged = 1 
+		LEFT JOIN [BeckmanLIS].[dbo].[TestRequestDetails] AS TRD
+		ON ST.REQNO=TRD.HISRequestNo AND ST.TESTID=TRD.HISTestCode
+		WHERE TRD.Id IS NULL 
+
+		COMMIT TRANSACTION
+
+		UPDATE #PATIENT SET ISPROCESSED = 1 WHERE REQNO = @REQNO
+
+	END	
+
+END
+
+GO

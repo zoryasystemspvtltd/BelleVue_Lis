@@ -1,0 +1,134 @@
+﻿[  
+  {
+    "Code": "10",
+    "Description": "TSH"
+  },
+  {
+    "Code": "21",
+    "Description": "Total T4"
+  },
+  {
+    "Code": "50",
+    "Description": "Total T3"
+  },
+  {
+    "Code": "116",
+    "Description": "CSA"
+  },
+  {
+    "Code": "124",
+    "Description": "Free T3"
+  },
+  {
+    "Code": "125",
+    "Description": "Free T4"
+  },
+  {
+    "Code": "301",
+    "Description": "CEA"
+  },
+  {
+    "Code": "311",
+    "Description": "AFP"
+  },
+  {
+    "Code": "321",
+    "Description": "TPSA"
+  },
+  {
+    "Code": "332",
+    "Description": "CA15-3"
+  },
+  {
+    "Code": "341",
+    "Description": "CA125"
+  },
+  {
+    "Code": "351",
+    "Description": "CA19-9"
+  },
+  {
+    "Code": "381",
+    "Description": "FERR"
+  },
+  {
+    "Code": "510",
+    "Description": "PCT"
+  },
+  {
+    "Code": "900",
+    "Description": "UR/Creatinine Ratio"
+  },
+  {
+    "Code": "901",
+    "Description": "Anion Gap (K+)"
+  },
+  {
+    "Code": "902",
+    "Description": "Anion Gap"
+  },
+  {
+    "Code": "903",
+    "Description": "A/G Ratio"
+  },
+  {
+    "Code": "904",
+    "Description": "Neonatal Bilirubin"
+  },
+  {
+    "Code": "905",
+    "Description": "Direct Bilirubin"
+  },
+  {
+    "Code": "906",
+    "Description": "Delta Bilirubin"
+  },
+  {
+    "Code": "907",
+    "Description": "% CKMB"
+  },
+  {
+    "Code": "908",
+    "Description": "Osmolality"
+  },
+  {
+    "Code": "910",
+    "Description": "Globulin"
+  },
+  {
+    "Code": "911",
+    "Description": "Derived LDL"
+  },
+  {
+    "Code": "912",
+    "Description": "VLDL"
+  },
+  {
+    "Code": "916",
+    "Description": "LDL"
+  },
+  {
+    "Code": "917",
+    "Description": "CHOL/dHDL"
+  },
+  {
+    "Code": "918",
+    "Description": "%Hemoglobin A1c"
+  },
+  {
+    "Code": "919",
+    "Description": "% Iron Saturation"
+  },
+  {
+    "Code": "950",
+    "Description": "Hemolysis"
+  },
+  {
+    "Code": "951",
+    "Description": "Icterus"
+  },
+  {
+    "Code": "952",
+    "Description": "Turbidity"
+  }  
+]

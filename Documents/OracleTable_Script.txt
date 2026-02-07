@@ -1,0 +1,45 @@
+CREATE TABLE TestResults(
+    Id Number(19)  NOT NULL,
+    SampleNo varchar2(100) NULL,
+    HISTestCode varchar2(100) NULL,
+    LISTestCode varchar2(100) NULL,
+    SpecimenCode varchar2(100) NULL,
+    SpecimenName varchar2(255) NULL,
+    ResultDate Date NOT NULL,
+    SampleCollectionDate Date NOT NULL,
+    SampleReceivedDate Date NOT NULL,
+    AuthorizationDate Date NULL,
+    AuthorizedBy varchar2(100) NULL,
+    ReviewDate Date NULL,
+    ReviewedBy varchar2(100) NULL,
+    TechnicianNote varchar2(1000) NULL,
+    DoctorNote varchar2(1000) NULL,
+    CreatedBy varchar2(100) NULL,
+    CreatedOn Date NOT NULL,
+    PatientId Number(19) NOT NULL,
+    TestRequestId Number(19) NOT NULL,
+    EquipmentId Number(10) NOT NULL,
+ CONSTRAINT PK_TestResults PRIMARY KEY
+(
+    Id
+)
+);
+
+CREATE TABLE TestResultDetails(
+    Id Number(19,0)  NOT NULL,
+    LISParamCode varchar2(100) NULL,
+    LISParamValue varchar2(100) NULL,
+    LISParamUnit varchar2(200) NULL,
+    CreatedBy varchar2(100) NULL,
+    CreatedOn Date NOT NULL,
+    TestResultId Number(19,0) NOT NULL,
+ CONSTRAINT PK_TestResultDetails PRIMARY KEY
+(
+    Id
+)
+);
+
+ALTER TABLE TestResultDetails
+ADD CONSTRAINT fk_resultid
+  FOREIGN KEY (Id)
+  REFERENCES TestResults(Id);

@@ -1,0 +1,65 @@
+CODE,DESCRIPTION
+AbHBsII,Hepatitis B Surface Antibody II (not available in the US)
+AFP,Alpha-Feto Protein (cancer and ONTD utility)
+AgHBs,Hepatitis B Surface Antigen (not available in the US)
+AgHBsBlk,Hepatitis B Surface Antigen Blocking (not available in the US)
+AgHBsCtl,Hepatitis B Surface Antigen Control (not available in the US)
+CEA,Carcino-embryonic Antigen
+Chl-Ag,Chlamydia Antigen (available only on Access 2 instruments)
+ChlBlock,Chlamydia Blocking (available only on Access 2 instruments)
+CKMB,Creatine Kinase - MB (previous formulation P/N 33300)
+CK-MB,Creatine Kinase - MB (new formulation P/N 386371)
+CMV-IgG,Cytomegalovirus Immunoglobulin G
+CMV-IgM,Cytomegalovirus Immunoglobulin M
+Cortisol,Cortisol
+cTnI,AccuTnITM
+Dig,Digoxin
+Dil-hCG2,Diluted Human Chorionic Gonadotropin
+ESTRDL,Estradiol
+Ferritin,Ferritin
+Folate,Folate
+freePSA,Free Prostate Specific Antigen
+FreeT3,Free Triiodothyronine
+FT4,Free Thyroxine
+FTIndex,Free Thyroxine Index (calculated using TotT4 and TU results; do not request this test)
+HAVAb,Hepatitis A Virus Total Antibody (not available in the US)
+HAV-IgM,Hepatitis A Virus Immunoglobulin M (not available in the US)
+HBc-Ab,Hepatitis B Core Total Antibody (not available in the US)
+HBc-IgM,Hepatitis B Core Immunoglobulin M (not available in the US)
+HBsAg,Hepatitis B Surface Antigen (previous formulation)
+HBsAgBlk,Hepatitis B Surface Antigen Blocking (previous formulation)
+HBsAgCtl,Hepatitis B Surface Antigen Control (previous formulation)
+HCV-Ab,Hepatitis C Virus Antibody
+HCVPLUS,Hepatitis C Virus Antibody Plus (not available in the US)
+hFSH,Human Follicle Stimulating Hormone
+hGH,Human Growth Hormone
+HIV-Ab,HIV Antibody
+HIVAbNew,"HIV 1, 2 New (not available in the US)"
+hLH,Human Luteinizing Hormone
+IgG-Toxo,Toxoplasmosis Immunoglobulin G
+IgM-Toxo,Toxoplasmosis Immunoglobulin M
+Insulin,Insulin
+MYO,"Myoglobin (new formulation, P/N 973243)"
+Myoglob,"Myoglobin (previous formulation, P/N 33310)"
+Ostase,Ostase?
+OV125Ag,OV Monitor (CA 125 Antigen)
+PRL,Prolactin
+Prog,Progesterone
+PSA-Hyb,Hybritech? Prostate Specific Antigen
+RBCFol,Red Blood Cell Folate
+Rub-IgG,Rubella Immunoglobulin G
+Rub-IgM,Rubella Immunoglobulin M (not available in the US)
+SpIgE,Specific Immunoglobulin E
+TBhCG2,Total Beta Human Chorionic Gonadotropin
+Testo,Testosterone
+Tg,Thyroglobulin
+TgAb,Thyroglobulin Antibody
+Theo,Theophylline
+TotIgE,Total Immunoglobulin E
+TotT3,Total Triiodothyronine (previous formulation)
+TotT4,Total Thyroxine
+TSH,Thyroid Stimulating Hormone
+TT3,Total Triiodothyronine (new formulation)
+TU,Thyroid Uptake
+uE3,Unconjugated Estriol
+VitB12,Vitamin B12

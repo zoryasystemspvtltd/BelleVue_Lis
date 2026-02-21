@@ -24,7 +24,7 @@ namespace LIS.Com.Businesslogic
 
         protected SerialPort port;
 
-        protected string[] data = new string[6];// This need to be 7 for equipment XN1000
+        protected string[] data = new string[7];// This need to be 7 for equipment XN1000
         protected int index;
         protected string sInputMsg = "";
         public bool IsReady { get; private set; }
@@ -157,11 +157,13 @@ namespace LIS.Com.Businesslogic
                                     WriteToPort((char)2 + Add_CheckSum(data[index + 1]) + Constants.vbCrLf);
                                     index = 4;
                                     break;
-                                //case 4:
-                                //    //(char)2 means start of text
-                                //    WriteToPort((char)2 + Add_CheckSum(data[index + 1]) + Constants.vbCrLf);
-                                //    index = 5;
-                                //    break;
+                                case 4: 
+                                    // This section is required for XN1000, as it needs 5 frames of data to be sent to the equipment.
+                                    // For other equipment this section will not be executed as index will be reset to 0 in default section.
+                                    //(char)2 means start of text
+                                    WriteToPort((char)2 + Add_CheckSum(data[index + 1]) + Constants.vbCrLf);
+                                    index = 5;
+                                    break;
                                 default:
                                     //(char)4 means end of transmission
                                     WriteToPort("" + (char)4);

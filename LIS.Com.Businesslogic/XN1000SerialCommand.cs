@@ -64,7 +64,11 @@ namespace LIS.Com.Businesslogic
                 var orderSegment1 = "";
                 var orderSegment2 = "";
                 var temporderSegment = $"O|1|{sampleStr}||";
-                IEnumerable<TestRequestDetail> testlist = await LisContext.LisDOM.GetTestRequestDetails(sampleId);
+                IEnumerable<TestRequestDetail> listData = await LisContext.LisDOM.GetTestRequestDetails(sampleId);
+                List<TestRequestDetail> testlist = listData
+                                    .GroupBy(x => x.LISTestCode)
+                                    .Select(g => g.First())
+                                    .ToList();
 
                 if (testlist != null && testlist.Count() > 0)
                 {
@@ -167,16 +171,16 @@ namespace LIS.Com.Businesslogic
                     patientSegment = $"2P|1{Strings.Chr(13)}{Strings.Chr(3)}";
                     orderSegment1 = $"3O|{sampleStr}||||{datetime}||||||||||||||||||Y{Strings.Chr(13)}{Strings.Chr(3)}";
                     trailerSegment = $"4L|1|N{Strings.Chr(13)}{Strings.Chr(3)}";
-                    data[0] = Strings.Chr(5).ToString();
-                    data[1] = headerSegment;
+                    data[1] = Strings.Chr(5).ToString();
+                    data[2] = headerSegment;
                     Logger.Logger.LogInstance.LogDebug("XN1000 Header Segment {0}", headerSegment);
-                    data[2] = patientSegment;
+                    data[3] = patientSegment;
                     Logger.Logger.LogInstance.LogDebug("XN1000 Patient Segment {0}", patientSegment);
-                    data[3] = orderSegment1;
+                    data[4] = orderSegment1;
                     Logger.Logger.LogInstance.LogDebug("XN1000 Order Segment {0}", orderSegment1);
-                    data[4] = trailerSegment;
+                    data[5] = trailerSegment;
                     Logger.Logger.LogInstance.LogDebug("XN1000 Trailer Segment {0}", trailerSegment);
-                    index = 0;
+                    index = 1;
                 }
 
                 if (!port.IsOpen)

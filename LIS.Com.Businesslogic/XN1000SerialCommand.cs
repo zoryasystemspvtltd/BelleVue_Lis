@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace LIS.Com.Businesslogic
 {
@@ -71,9 +72,7 @@ namespace LIS.Com.Businesslogic
                                     .ToList();
 
                 if (testlist != null && testlist.Count() > 0)
-                {
-                    string patientFirstName = "";
-                    string patientLastName = "";
+                {                    
                     trailerSegment = $"5L|1|N{Strings.Chr(13)}{Strings.Chr(3)}";
 
                     var firstTest = testlist.First();
@@ -92,43 +91,7 @@ namespace LIS.Com.Businesslogic
                         dob = firstTest.Patient?.DateOfBirth.ToString("yyyyMMdd");
                     }
 
-                    var name = firstTest.Patient?.Name.Split(' ');
-                    if (name.Count() > 1)
-                    {
-                        if (name.Count() == 4)
-                        {
-                            patientFirstName = name[1];
-                            patientLastName = name[3];
-                        }
-                        else if (name.Count() == 3)
-                        {
-                            patientFirstName = name[0];
-                            patientLastName = name[2];
-                        }
-                        else if (name.Count() == 2)
-                        {
-                            patientFirstName = name[0];
-                            patientLastName = name[1];
-                        }
-                        else
-                        {
-                            patientFirstName = name[0];
-                            patientLastName = name[1];
-                        }
-                    }
-                    else
-                    {
-                        patientFirstName = firstTest.Patient?.Name;
-                    }
-
-                    if (patientFirstName.Length > 20)
-                    {
-                        patientFirstName = patientFirstName.Substring(0, 19);
-                    }
-                    if (patientLastName.Length > 20)
-                    {
-                        patientLastName = patientLastName.Substring(0, 19);
-                    }
+                    GetPatientFirstLstName(firstTest.Patient?.Name, out string patientFirstName, out string patientLastName);
 
                     for (int i = 0; i < testlist.Count();)
                     {
@@ -146,24 +109,42 @@ namespace LIS.Com.Businesslogic
                     patientSegment = $"2P|1|||{patientId}|^{patientFirstName}^{patientLastName}||{dob}|{patientGender}|||||^||||||||||||^^^{patientBedNo}{Strings.Chr(13)}{Strings.Chr(3)}";
                     temporderSegment += $"{testname}||{datetime}|||||N||||||||||||||Q";
 
-                    var order1 = temporderSegment.Substring(0, 230);
-                    int orderCharCount = temporderSegment.Length - 230;
-                    var order2 = temporderSegment.Substring(230, orderCharCount);
-                    orderSegment1 = $"3{order1}{Strings.Chr(23)}"; //23 means ETB
-                    orderSegment2 = $"4{order2}{Strings.Chr(13)}{Strings.Chr(3)}";
+                    if (temporderSegment.Length > 230)
+                    {
+                        var order1 = temporderSegment.Substring(0, 230);
+                        int orderCharCount = temporderSegment.Length - 230;
+                        var order2 = temporderSegment.Substring(230, orderCharCount);
+                        orderSegment1 = $"3{order1}{Strings.Chr(23)}"; //23 means ETB
+                        orderSegment2 = $"4{order2}{Strings.Chr(13)}{Strings.Chr(3)}";
+                        data[0] = Strings.Chr(5).ToString();
+                        data[1] = headerSegment;
+                        Logger.Logger.LogInstance.LogDebug("XN1000 Header Segment {0}", headerSegment);
+                        data[2] = patientSegment;
+                        Logger.Logger.LogInstance.LogDebug("XN1000 Patient Segment {0}", patientSegment);
+                        data[3] = orderSegment1;
+                        Logger.Logger.LogInstance.LogDebug("XN1000 Order1 Segment {0}", orderSegment1);
+                        data[4] = orderSegment2;
+                        Logger.Logger.LogInstance.LogDebug("XN1000 Order2 Segment {0}", orderSegment2);
+                        data[5] = trailerSegment;
+                        Logger.Logger.LogInstance.LogDebug("XN1000 Trailer Segment {0}", trailerSegment);
+                        index = 0;
+                    }
+                    else
+                    {
+                        orderSegment1 = $"3{temporderSegment}{Strings.Chr(13)}{Strings.Chr(3)}";
+                        data[1] = Strings.Chr(5).ToString();
+                        data[2] = headerSegment;
+                        Logger.Logger.LogInstance.LogDebug("XN1000 Header Segment {0}", headerSegment);
+                        data[3] = patientSegment;
+                        Logger.Logger.LogInstance.LogDebug("XN1000 Patient Segment {0}", patientSegment);
+                        data[4] = orderSegment1;
+                        Logger.Logger.LogInstance.LogDebug("XN1000 Order2 Segment {0}", orderSegment1);
+                        trailerSegment = $"4L|1|N{Strings.Chr(13)}{Strings.Chr(3)}";
+                        data[5] = trailerSegment;
+                        Logger.Logger.LogInstance.LogDebug("XN1000 Trailer Segment {0}", trailerSegment);
+                        index = 1;
+                    }
 
-                    data[0] = Strings.Chr(5).ToString();
-                    data[1] = headerSegment;
-                    Logger.Logger.LogInstance.LogDebug("XN1000 Header Segment {0}", headerSegment);
-                    data[2] = patientSegment;
-                    Logger.Logger.LogInstance.LogDebug("XN1000 Patient Segment {0}", patientSegment);
-                    data[3] = orderSegment1;
-                    Logger.Logger.LogInstance.LogDebug("XN1000 Order1 Segment {0}", orderSegment1);
-                    data[4] = orderSegment2;
-                    Logger.Logger.LogInstance.LogDebug("XN1000 Order2 Segment {0}", orderSegment2);
-                    data[5] = trailerSegment;
-                    Logger.Logger.LogInstance.LogDebug("XN1000 Trailer Segment {0}", trailerSegment);
-                    index = 0;
                 }
                 else//no test order
                 {
@@ -196,7 +177,49 @@ namespace LIS.Com.Businesslogic
                 Logger.Logger.LogInstance.LogException("XN1000 SendOrderData method exception:", ex);
             }
         }
+     
+        private void GetPatientFirstLstName(string patientName, out string firstName, out string lastname)
+        {
+            firstName = "";
+            lastname = "";
+            var name = patientName.Split(' ');
+            if (name.Count() > 1)
+            {
+                if (name.Count() == 4)
+                {
+                    firstName = name[1];
+                    lastname = name[3];
+                }
+                else if (name.Count() == 3)
+                {
+                    firstName = name[0];
+                    lastname = name[2];
+                }
+                else if (name.Count() == 2)
+                {
+                    firstName = name[0];
+                    lastname = name[1];
+                }
+                else
+                {
+                    firstName = name[0];
+                    lastname = name[1];
+                }
+            }
+            else
+            {
+                firstName = patientName;
+            }
 
+            if (firstName.Length > 20)
+            {
+                firstName = firstName.Substring(0, 19);
+            }
+            if (lastname.Length > 20)
+            {
+                lastname = lastname.Substring(0, 19);
+            }
+        }
         public override async Task Identify(string message)
         {
             Logger.Logger.LogInstance.LogDebug("XN1000 Identify method started");

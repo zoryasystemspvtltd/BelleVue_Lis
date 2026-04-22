@@ -131,8 +131,8 @@ namespace LIS.BusinessLogic
 
                     testRequestDetailManager.UpdateStatus(testRequest.Id, ReportStatusType.ReportGenerated);
 
-                    //DXH800 or Mindray machines for missing tests
-                    if (equpment.Model == "DXH800" || equpment.Model == "MindRay")
+                    //DXH800 or Mindray or XN1000 machines for missing tests
+                    if (equpment.Model == "DXH800" || equpment.Model == "MindRay" || equpment.Model == "XN1000")
                     {
                         var requestList = testRequestDetailManager.GetBySampleNo(result.TestResult.SampleNo, ReportStatusType.SentToEquipment).ToList();
                         foreach (var subRequest in requestList)
